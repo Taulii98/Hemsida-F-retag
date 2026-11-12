@@ -1,9 +1,8 @@
 // =========================================================
 // Koppling till Supabase
-// Byt ut texten inom citattecknen mot era två koder från Supabase
-// (Project Settings -> API). Ändra inget annat i filen.
+// Ändra inget i den här filen om du inte byter Supabase-projekt.
 // =========================================================
 window.IPM_CONFIG = {
-  SUPABASE_URL: "KLISTRA_IN_PROJECT_URL_HAR",
-  SUPABASE_KEY: "KLISTRA_IN_ANON_KEY_HAR"
+  SUPABASE_URL: "https://duyblxhwtymiwuvpiriz.supabase.co",
+  SUPABASE_KEY: "sb_publishable_N4bHCRNG3fHOP2pW4rjouA_YLyuT_Vr"
 };
