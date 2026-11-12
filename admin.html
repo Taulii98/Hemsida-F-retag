@@ -97,6 +97,24 @@
   .add-img input{display:none}
   .form-actions{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1.5rem;flex-wrap:wrap}
   .progress{font-size:.88rem;color:var(--muted);align-self:center;margin-right:auto}
+  .badge.kommande{background:#e4eefb;color:#2a5ea8}
+  .sections{display:flex;gap:.25rem;background:#fff;border-radius:12px;padding:.3rem;box-shadow:var(--shadow);margin-bottom:1.5rem;overflow-x:auto}
+  .sections button{flex:1;white-space:nowrap;border:0;background:none;font:inherit;font-weight:700;font-size:.92rem;color:var(--muted);padding:.65rem 1rem;border-radius:9px;cursor:pointer}
+  .sections button.active{background:var(--deep);color:#fff}
+  .sections .n{display:inline-block;min-width:1.3rem;padding:0 .35rem;margin-left:.3rem;border-radius:999px;background:#e45b4b;color:#fff;font-size:.72rem;line-height:1.3rem}
+  .more{display:block;width:100%;margin-top:.5rem}
+  select.st{width:auto;display:inline-block;margin:0;padding:.42rem .6rem;font-size:.82rem;font-weight:600;border-radius:8px}
+  .app{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.1rem 1.25rem;margin-bottom:.75rem}
+  .app .h{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:flex-start}
+  .app h3{font-size:1.05rem}
+  .app .meta{font-size:.85rem;color:var(--muted)}
+  .app .msgtxt{margin-top:.6rem;font-size:.92rem;white-space:pre-line;color:var(--fg);background:var(--bg);border-radius:8px;padding:.7rem .85rem}
+  .app .links{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem}
+  .check{display:flex;align-items:center;gap:.6rem;font-weight:600;margin-top:.5rem}
+  .check input{width:auto;margin:0}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;padding:.15rem .55rem;border-radius:999px;margin-top:.35rem}
+  .pill.on{background:var(--green-bg);color:var(--green)}
+  .pill.off{background:#eef1f5;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -114,13 +132,18 @@
 </header>
 
 <main>
+  <div class="sections hidden" id="sections">
+    <button data-s="projekt" class="active">Projekt</button>
+    <button data-s="jobb">Lediga tjänster</button>
+    <button data-s="ansok">Ansökningar <span class="n hidden" id="appcount"></span></button>
+  </div>
   <div id="notice"></div>
 
   <!-- Inloggning -->
   <section id="v-login" class="login hidden">
     <div class="card">
       <h1>Logga in</h1>
-      <p class="sub">Hantera projekt på i-pm.se</p>
+      <p class="sub">Hantera i-pm.se</p>
       <div id="login-msg"></div>
       <form id="login-form">
         <label>Mejl<input type="email" id="l-email" autocomplete="username" required></label>
@@ -130,17 +153,14 @@
     </div>
   </section>
 
-  <!-- Lista -->
+  <!-- Projektlista -->
   <section id="v-list" class="hidden">
-    <div class="top">
-      <h1>Projekt</h1>
-      <button class="btn btn-primary" id="new-btn">+ Nytt projekt</button>
-    </div>
+    <div class="top"><h1>Projekt</h1><button class="btn btn-primary" id="new-btn">+ Nytt projekt</button></div>
     <div class="filters" id="filters"></div>
     <div id="list"></div>
   </section>
 
-  <!-- Formulär -->
+  <!-- Projektformulär -->
   <section id="v-form" class="hidden">
     <div class="card form">
       <h1 id="f-heading">Nytt projekt</h1>
@@ -159,15 +179,14 @@
         </datalist>
         <div class="section-title">Status</div>
         <div class="status-pick">
+          <label><input type="radio" name="status" value="kommande"> Kommande</label>
           <label><input type="radio" name="status" value="pagaende" checked> Pågående</label>
           <label><input type="radio" name="status" value="avslutad"> Avslutat</label>
         </div>
         <label style="margin-top:1rem">Beskrivning<textarea id="f-desc" placeholder="Berätta om projektet: vad IPM gjorde, vilka material, något som var speciellt …"></textarea></label>
-
         <div class="section-title">Bilder</div>
         <p class="hint">Första bilden blir omslagsbild. Bilderna förminskas automatiskt innan de laddas upp.</p>
         <div class="imgs" id="imgs"></div>
-
         <div class="form-actions">
           <span class="progress" id="progress"></span>
           <button type="button" class="btn btn-light" id="cancel">Avbryt</button>
@@ -176,87 +195,133 @@
       </form>
     </div>
   </section>
+
+  <!-- Tjänster -->
+  <section id="v-jobs" class="hidden">
+    <div class="top"><h1>Lediga tjänster</h1><button class="btn btn-primary" id="newjob-btn">+ Ny tjänst</button></div>
+    <div id="joblist"></div>
+  </section>
+
+  <section id="v-jobform" class="hidden">
+    <div class="card form">
+      <h1 id="j-heading">Ny tjänst</h1>
+      <div id="jform-msg"></div>
+      <form id="j-form">
+        <label>Titel <span class="req">*</span><input id="j-title" required placeholder="t.ex. Montör betongprefab"></label>
+        <div class="grid2">
+          <label>Ort<input id="j-location" placeholder="t.ex. Skåne / hela Sverige"></label>
+          <label>Anställningsform<input id="j-employment" list="emp" placeholder="t.ex. Heltid"></label>
+        </div>
+        <datalist id="emp"><option value="Heltid"><option value="Deltid"><option value="Visstid"><option value="Sommarjobb"><option value="Praktik"></datalist>
+        <label>Sista ansökningsdag<input id="j-last" placeholder="t.ex. 31 januari 2027 eller Löpande"></label>
+        <label>Beskrivning<textarea id="j-desc" placeholder="Vad jobbet innebär, vad ni söker, krav och meriter …"></textarea></label>
+        <label class="check"><input type="checkbox" id="j-pub" checked> Visa på hemsidan</label>
+        <div class="form-actions">
+          <button type="button" class="btn btn-light" id="j-cancel">Avbryt</button>
+          <button class="btn btn-primary" id="j-save">Spara tjänst</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Ansökningar -->
+  <section id="v-apps" class="hidden">
+    <div class="top"><h1>Ansökningar</h1></div>
+    <div id="applist"></div>
+  </section>
 </main>
 
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUCKET='projektbilder';
+const BUCKET='projektbilder',CV_BUCKET='ansokningar',PAGE=3;
 const CFG=window.IPM_CONFIG||{};
 let db=null;
-
-function show(view){['login','list','form'].forEach(v=>$('v-'+v).classList.toggle('hidden',v!==view));window.scrollTo(0,0)}
+const VIEWS=['login','list','form','jobs','jobform','apps'];
+function show(view){VIEWS.forEach(v=>$('v-'+v).classList.toggle('hidden',v!==view));window.scrollTo(0,0)}
 function msg(el,type,text){$(el).innerHTML=text?`<div class="msg ${type}">${text}</div>`:''}
+function dateSv(d){try{return new Date(d).toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'})}catch(e){return ''}}
+// Tryck två gånger för att ta bort
+function confirmTwice(btn,fn){
+  if(!btn.classList.contains('sure')){const t=btn.textContent;btn.classList.add('sure');btn.textContent='Säker? Tryck igen';
+    setTimeout(()=>{if(btn.isConnected){btn.classList.remove('sure');btn.textContent=t}},4000);return}
+  btn.disabled=true;fn();
+}
+function moreBtn(shown,total,onclick){
+  if(total<=shown)return null;
+  const b=document.createElement('button');b.className='btn btn-light more';
+  b.textContent=`Visa fler (${total-shown} till)`;b.onclick=onclick;return b;
+}
 
 /* ---------- Start ---------- */
 (function start(){
-  const configured=CFG.SUPABASE_URL&&!CFG.SUPABASE_URL.includes('KLISTRA')&&CFG.SUPABASE_KEY&&!CFG.SUPABASE_KEY.includes('KLISTRA');
-  if(!configured){msg('notice','info','<b>Admin är inte kopplad än.</b> Fyll i de två koderna från Supabase i filen config.js, så fungerar inloggningen.');show('login');$('l-btn').disabled=true;return}
+  const ok=CFG.SUPABASE_URL&&!CFG.SUPABASE_URL.includes('KLISTRA')&&CFG.SUPABASE_KEY&&!CFG.SUPABASE_KEY.includes('KLISTRA');
+  if(!ok){msg('notice','info','<b>Admin är inte kopplad än.</b> Fyll i de två koderna från Supabase i filen config.js.');show('login');$('l-btn').disabled=true;return}
   if(!window.supabase){msg('notice','err','Kunde inte ladda Supabase. Kontrollera internetanslutningen och ladda om sidan.');return}
   db=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_KEY);
   db.auth.getSession().then(({data})=>data.session?loggedIn(data.session):show('login'));
 })();
 
-/* ---------- Inloggning ---------- */
 $('login-form').onsubmit=async e=>{
-  e.preventDefault();
-  $('l-btn').disabled=true;$('l-btn').textContent='Loggar in …';msg('login-msg');
+  e.preventDefault();$('l-btn').disabled=true;$('l-btn').textContent='Loggar in …';msg('login-msg');
   const {data,error}=await db.auth.signInWithPassword({email:$('l-email').value.trim(),password:$('l-pass').value});
   $('l-btn').disabled=false;$('l-btn').textContent='Logga in';
   if(error){msg('login-msg','err','Fel mejl eller lösenord.');return}
   loggedIn(data.session);
 };
-$('logout').onclick=async()=>{await db.auth.signOut();$('logout').classList.add('hidden');$('who').textContent='';show('login')};
+$('logout').onclick=async()=>{await db.auth.signOut();$('logout').classList.add('hidden');$('sections').classList.add('hidden');$('who').textContent='';msg('notice');show('login')};
 function loggedIn(session){
-  $('who').textContent=session.user.email;$('logout').classList.remove('hidden');
-  loadList();
+  $('who').textContent=session.user.email;$('logout').classList.remove('hidden');$('sections').classList.remove('hidden');
+  goSection('projekt');countApps();
 }
+function goSection(s){
+  msg('notice');
+  document.querySelectorAll('#sections button').forEach(b=>b.classList.toggle('active',b.dataset.s===s));
+  if(s==='projekt')loadList();if(s==='jobb')loadJobs();if(s==='ansok')loadApps();
+}
+document.querySelectorAll('#sections button').forEach(b=>b.onclick=()=>goSection(b.dataset.s));
 
-/* ---------- Lista ---------- */
-let projects=[],filter='alla';
-const STATUS={pagaende:'Pågående',avslutad:'Avslutat'};
+/* =============== PROJEKT =============== */
+let projects=[],filter='alla',shown=PAGE;
+const STATUS={kommande:'Kommande',pagaende:'Pågående',avslutad:'Avslutat'};
 async function loadList(){
-  show('list');
-  $('list').innerHTML='<div class="empty">Hämtar projekt …</div>';
+  show('list');$('list').innerHTML='<div class="empty">Hämtar projekt …</div>';
   const {data,error}=await db.from('projects').select('*').order('created_at',{ascending:false});
   if(error){$('list').innerHTML=`<div class="msg err">Kunde inte hämta projekten. (${esc(error.message)})</div>`;return}
-  projects=data||[];renderList();
+  projects=data||[];shown=PAGE;renderList();
 }
 function renderList(){
-  const n={alla:projects.length,pagaende:0,avslutad:0};projects.forEach(p=>n[p.status]++);
-  $('filters').innerHTML=[['alla','Alla'],['pagaende','Pågående'],['avslutad','Avslutade']]
+  const n={alla:projects.length,kommande:0,pagaende:0,avslutad:0};projects.forEach(p=>{if(p.status in n)n[p.status]++});
+  $('filters').innerHTML=[['alla','Alla'],['kommande','Kommande'],['pagaende','Pågående'],['avslutad','Avslutade']]
     .map(([k,l])=>`<button data-f="${k}" class="${filter===k?'active':''}">${l}<span class="count">${n[k]}</span></button>`).join('');
-  $('filters').querySelectorAll('button').forEach(b=>b.onclick=()=>{filter=b.dataset.f;renderList()});
-  const list=projects.filter(p=>filter==='alla'||p.status===filter);
-  if(!list.length){$('list').innerHTML=`<div class="empty">${projects.length?'Inga projekt här.':'Inga projekt än. Tryck på <b>+ Nytt projekt</b> för att lägga till det första.'}</div>`;return}
-  $('list').innerHTML=list.map(p=>`
+  $('filters').querySelectorAll('button').forEach(b=>b.onclick=()=>{filter=b.dataset.f;shown=PAGE;renderList()});
+  const all=projects.filter(p=>filter==='alla'||p.status===filter);
+  if(!all.length){$('list').innerHTML=`<div class="empty">${projects.length?'Inga projekt här.':'Inga projekt än. Tryck på <b>+ Nytt projekt</b> för att lägga till det första.'}</div>`;return}
+  $('list').innerHTML=all.slice(0,shown).map(p=>`
     <div class="row">
       ${p.images&&p.images[0]?`<img class="thumb" src="${esc(p.images[0])}" alt="">`:'<div class="thumb">Ingen bild</div>'}
-      <div>
-        <h3>${esc(p.title)}</h3>
+      <div><h3>${esc(p.title)}</h3>
         <div class="meta">${[p.location,p.type,p.period].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div>
-        <span class="badge ${p.status}">${STATUS[p.status]}</span>
-      </div>
+        <span class="badge ${p.status}">${STATUS[p.status]}</span></div>
       <div class="actions">
         <button class="btn btn-light btn-sm" data-edit="${p.id}">Ändra</button>
-        <button class="btn btn-light btn-sm" data-toggle="${p.id}">${p.status==='pagaende'?'Markera avslutat':'Markera pågående'}</button>
+        <select class="st" data-st="${p.id}" aria-label="Status">${Object.entries(STATUS).map(([k,l])=>`<option value="${k}" ${p.status===k?'selected':''}>${l}</option>`).join('')}</select>
         <button class="btn btn-danger btn-sm" data-del="${p.id}">Ta bort</button>
       </div>
     </div>`).join('');
+  const m=moreBtn(shown,all.length,()=>{shown+=PAGE;renderList()});if(m)$('list').appendChild(m);
   $('list').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openForm(projects.find(p=>p.id===b.dataset.edit)));
-  $('list').querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>toggleStatus(b.dataset.toggle,b));
-  $('list').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>removeProject(b.dataset.del,b));
+  $('list').querySelectorAll('[data-st]').forEach(s=>s.onchange=()=>setStatus(s.dataset.st,s.value,s));
+  $('list').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>confirmTwice(b,()=>removeProject(b.dataset.del,b)));
 }
-async function toggleStatus(id,btn){
-  const p=projects.find(x=>x.id===id);const next=p.status==='pagaende'?'avslutad':'pagaende';
-  btn.disabled=true;
+async function setStatus(id,next,sel){
+  const p=projects.find(x=>x.id===id);sel.disabled=true;
   const {error}=await db.from('projects').update({status:next}).eq('id',id);
-  if(error){msg('notice','err','Kunde inte ändra status. ('+esc(error.message)+')');btn.disabled=false;return}
+  sel.disabled=false;
+  if(error){msg('notice','err','Kunde inte ändra status. ('+esc(error.message)+')');sel.value=p.status;return}
   p.status=next;msg('notice','ok',`”${esc(p.title)}” är nu ${STATUS[next].toLowerCase()}.`);renderList();
 }
 async function removeProject(id,btn){
-  if(!btn.classList.contains('sure')){btn.classList.add('sure');btn.textContent='Säker? Tryck igen';setTimeout(()=>{btn.classList.remove('sure');btn.textContent='Ta bort'},4000);return}
-  btn.disabled=true;
   const p=projects.find(x=>x.id===id);
   const {error}=await db.from('projects').delete().eq('id',id);
   if(error){msg('notice','err','Kunde inte ta bort projektet. ('+esc(error.message)+')');btn.disabled=false;return}
@@ -266,7 +331,6 @@ async function removeProject(id,btn){
 }
 $('new-btn').onclick=()=>openForm(null);
 
-/* ---------- Formulär ---------- */
 let editing=null,imgs=[],removed=[];
 function openForm(p){
   editing=p;removed=[];msg('form-msg');msg('notice');$('progress').textContent='';
@@ -274,68 +338,147 @@ function openForm(p){
   $('f-title').value=p?.title||'';$('f-location').value=p?.location||'';$('f-type').value=p?.type||'';
   $('f-customer').value=p?.customer||'';$('f-period').value=p?.period||'';$('f-desc').value=p?.description||'';
   document.querySelector(`input[name=status][value=${p?.status||'pagaende'}]`).checked=true;
-  imgs=(p?.images||[]).map(url=>({url,preview:url}));
-  renderImgs();show('form');
+  imgs=(p?.images||[]).map(url=>({url,preview:url}));renderImgs();show('form');
 }
 function renderImgs(){
   $('imgs').innerHTML=imgs.map((im,i)=>`
-    <div class="img"><img src="${esc(im.preview)}" alt="">
-      ${i===0?'<span class="cover">Omslag</span>':''}
-      <div class="tools">${i>0?`<button type="button" data-first="${i}">Gör till omslag</button>`:''}<button type="button" class="x" data-rm="${i}">Ta bort</button></div>
-    </div>`).join('')+
+    <div class="img"><img src="${esc(im.preview)}" alt="">${i===0?'<span class="cover">Omslag</span>':''}
+      <div class="tools">${i>0?`<button type="button" data-first="${i}">Gör till omslag</button>`:''}<button type="button" class="x" data-rm="${i}">Ta bort</button></div></div>`).join('')+
     `<label class="add-img"><span>+</span>Lägg till bilder<input type="file" id="f-files" accept="image/*" multiple></label>`;
   $('imgs').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const [im]=imgs.splice(+b.dataset.rm,1);if(im.url)removed.push(im.url);if(im.file)URL.revokeObjectURL(im.preview);renderImgs()});
   $('imgs').querySelectorAll('[data-first]').forEach(b=>b.onclick=()=>{const [im]=imgs.splice(+b.dataset.first,1);imgs.unshift(im);renderImgs()});
   $('f-files').onchange=e=>{[...e.target.files].forEach(file=>imgs.push({file,preview:URL.createObjectURL(file)}));renderImgs()};
 }
 $('cancel').onclick=()=>{imgs.forEach(im=>im.file&&URL.revokeObjectURL(im.preview));show('list')};
-
-// Förminska bilder till max 2000 px så att de laddar snabbt på hemsidan
 async function shrink(file,max=2000){
   try{
     const bmp=await createImageBitmap(file,{imageOrientation:'from-image'});
     const s=Math.min(1,max/Math.max(bmp.width,bmp.height));
     const c=document.createElement('canvas');c.width=Math.round(bmp.width*s);c.height=Math.round(bmp.height*s);
     c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
-    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));
-    return blob?{blob,ext:'jpg',type:'image/jpeg'}:null;
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));return blob?{blob,type:'image/jpeg'}:null;
   }catch(e){return null}
 }
 function pathFromUrl(url){const i=url.indexOf('/'+BUCKET+'/');return i<0?null:decodeURIComponent(url.slice(i+BUCKET.length+2))}
-
 $('p-form').onsubmit=async e=>{
-  e.preventDefault();msg('form-msg');
-  const save=$('save');save.disabled=true;$('cancel').disabled=true;
+  e.preventDefault();msg('form-msg');const save=$('save');save.disabled=true;$('cancel').disabled=true;
   try{
     const urls=[];const total=imgs.filter(i=>i.file).length;let done=0;
     for(const im of imgs){
       if(im.url){urls.push(im.url);continue}
       done++;$('progress').textContent=`Laddar upp bild ${done} av ${total} …`;
       const small=await shrink(im.file);
-      const body=small?small.blob:im.file;
       const ext=small?'jpg':((im.file.name.split('.').pop()||'jpg').toLowerCase());
       const path=`${new Date().toISOString().slice(0,10)}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
-      const {error}=await db.storage.from(BUCKET).upload(path,body,{contentType:small?small.type:im.file.type,upsert:false});
+      const {error}=await db.storage.from(BUCKET).upload(path,small?small.blob:im.file,{contentType:small?small.type:im.file.type});
       if(error)throw new Error('Bilden kunde inte laddas upp: '+error.message);
-      const url=db.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
-      im.url=url;urls.push(url);
+      im.url=db.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;urls.push(im.url);
     }
     $('progress').textContent='Sparar …';
-    const row={
-      title:$('f-title').value.trim(),location:$('f-location').value.trim()||null,type:$('f-type').value.trim()||null,
+    const row={title:$('f-title').value.trim(),location:$('f-location').value.trim()||null,type:$('f-type').value.trim()||null,
       customer:$('f-customer').value.trim()||null,period:$('f-period').value.trim()||null,
-      status:document.querySelector('input[name=status]:checked').value,description:$('f-desc').value.trim()||null,images:urls
-    };
+      status:document.querySelector('input[name=status]:checked').value,description:$('f-desc').value.trim()||null,images:urls};
     const res=editing?await db.from('projects').update(row).eq('id',editing.id):await db.from('projects').insert(row);
     if(res.error)throw new Error('Projektet kunde inte sparas: '+res.error.message);
-    const paths=removed.map(pathFromUrl).filter(Boolean);
-    if(paths.length)db.storage.from(BUCKET).remove(paths).catch(()=>{});
-    msg('notice','ok',`”${esc(row.title)}” är sparat och syns nu på hemsidan.`);
-    await loadList();
+    const paths=removed.map(pathFromUrl).filter(Boolean);if(paths.length)db.storage.from(BUCKET).remove(paths).catch(()=>{});
+    await loadList();msg('notice','ok',`”${esc(row.title)}” är sparat och syns nu på hemsidan.`);
   }catch(err){
-    msg('form-msg','err',esc(err.message)+'<br>Om det står något om "policy" eller "permission": kontrollera att ert mejl finns i tabellen admins i Supabase.');
+    msg('form-msg','err',esc(err.message)+(/status/.test(err.message)?'<br>Har ni kört steg 2 i Supabase (supabase-steg2.sql)?':''));
   }finally{save.disabled=false;$('cancel').disabled=false;$('progress').textContent=''}
 };
+
+/* =============== LEDIGA TJÄNSTER =============== */
+let jobs=[],jobShown=PAGE,editingJob=null;
+async function loadJobs(){
+  show('jobs');$('joblist').innerHTML='<div class="empty">Hämtar tjänster …</div>';
+  const {data,error}=await db.from('jobs').select('*').order('created_at',{ascending:false});
+  if(error){$('joblist').innerHTML=`<div class="msg err">Kunde inte hämta tjänsterna. Har ni kört supabase-steg2.sql i Supabase? (${esc(error.message)})</div>`;return}
+  jobs=data||[];jobShown=PAGE;renderJobs();
+}
+function renderJobs(){
+  if(!jobs.length){$('joblist').innerHTML='<div class="empty">Inga tjänster än. Tryck på <b>+ Ny tjänst</b> för att lägga ut en.<br><br>Spontanansökan finns alltid på hemsidan.</div>';return}
+  $('joblist').innerHTML=jobs.slice(0,jobShown).map(j=>`
+    <div class="row" style="grid-template-columns:1fr auto">
+      <div><h3>${esc(j.title)}</h3>
+        <div class="meta">${[j.location,j.employment,j.last_date?'Sista dag: '+j.last_date:''].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div>
+        <span class="pill ${j.published?'on':'off'}">${j.published?'Syns på hemsidan':'Dold'}</span></div>
+      <div class="actions">
+        <button class="btn btn-light btn-sm" data-jedit="${j.id}">Ändra</button>
+        <button class="btn btn-light btn-sm" data-jpub="${j.id}">${j.published?'Dölj':'Visa'}</button>
+        <button class="btn btn-danger btn-sm" data-jdel="${j.id}">Ta bort</button>
+      </div>
+    </div>`).join('');
+  const m=moreBtn(jobShown,jobs.length,()=>{jobShown+=PAGE;renderJobs()});if(m)$('joblist').appendChild(m);
+  $('joblist').querySelectorAll('[data-jedit]').forEach(b=>b.onclick=()=>openJob(jobs.find(j=>j.id===b.dataset.jedit)));
+  $('joblist').querySelectorAll('[data-jpub]').forEach(b=>b.onclick=async()=>{
+    const j=jobs.find(x=>x.id===b.dataset.jpub);b.disabled=true;
+    const {error}=await db.from('jobs').update({published:!j.published}).eq('id',j.id);
+    if(error){msg('notice','err','Kunde inte ändra. ('+esc(error.message)+')');b.disabled=false;return}
+    j.published=!j.published;msg('notice','ok',`”${esc(j.title)}” ${j.published?'syns nu på hemsidan':'är nu dold'}.`);renderJobs()});
+  $('joblist').querySelectorAll('[data-jdel]').forEach(b=>b.onclick=()=>confirmTwice(b,async()=>{
+    const j=jobs.find(x=>x.id===b.dataset.jdel);
+    const {error}=await db.from('jobs').delete().eq('id',j.id);
+    if(error){msg('notice','err','Kunde inte ta bort. ('+esc(error.message)+')');b.disabled=false;return}
+    jobs=jobs.filter(x=>x.id!==j.id);msg('notice','ok',`”${esc(j.title)}” är borttagen.`);renderJobs()}));
+}
+$('newjob-btn').onclick=()=>openJob(null);
+function openJob(j){
+  editingJob=j;msg('jform-msg');msg('notice');
+  $('j-heading').textContent=j?'Ändra tjänst':'Ny tjänst';
+  $('j-title').value=j?.title||'';$('j-location').value=j?.location||'';$('j-employment').value=j?.employment||'';
+  $('j-last').value=j?.last_date||'';$('j-desc').value=j?.description||'';$('j-pub').checked=j?j.published:true;
+  show('jobform');
+}
+$('j-cancel').onclick=()=>show('jobs');
+$('j-form').onsubmit=async e=>{
+  e.preventDefault();$('j-save').disabled=true;
+  const row={title:$('j-title').value.trim(),location:$('j-location').value.trim()||null,employment:$('j-employment').value.trim()||null,
+    last_date:$('j-last').value.trim()||null,description:$('j-desc').value.trim()||null,published:$('j-pub').checked};
+  const res=editingJob?await db.from('jobs').update(row).eq('id',editingJob.id):await db.from('jobs').insert(row);
+  $('j-save').disabled=false;
+  if(res.error){msg('jform-msg','err','Kunde inte spara: '+esc(res.error.message));return}
+  await loadJobs();msg('notice','ok',`”${esc(row.title)}” är sparad${row.published?' och syns på hemsidan':''}.`);
+};
+
+/* =============== ANSÖKNINGAR =============== */
+let apps=[],appShown=PAGE;
+async function countApps(){
+  try{const {count}=await db.from('applications').select('id',{count:'exact',head:true});
+    if(count){$('appcount').textContent=count;$('appcount').classList.remove('hidden')}else $('appcount').classList.add('hidden')}catch(e){}
+}
+async function loadApps(){
+  show('apps');$('applist').innerHTML='<div class="empty">Hämtar ansökningar …</div>';
+  const {data,error}=await db.from('applications').select('*').order('created_at',{ascending:false});
+  if(error){$('applist').innerHTML=`<div class="msg err">Kunde inte hämta ansökningarna. Har ni kört supabase-steg2.sql i Supabase? (${esc(error.message)})</div>`;return}
+  apps=data||[];appShown=PAGE;renderApps();
+}
+function renderApps(){
+  if(!apps.length){$('applist').innerHTML='<div class="empty">Inga ansökningar än. När någon skickar en ansökan på hemsidan dyker den upp här.</div>';return}
+  $('applist').innerHTML=apps.slice(0,appShown).map(a=>`
+    <div class="app">
+      <div class="h"><div><h3>${esc(a.name)}</h3><div class="meta">${esc(a.job_title||'Spontanansökan')} · ${dateSv(a.created_at)}</div></div>
+        <button class="btn btn-danger btn-sm" data-adel="${a.id}">Ta bort</button></div>
+      ${a.message?`<div class="msgtxt">${esc(a.message)}</div>`:''}
+      <div class="links">
+        <a class="btn btn-light btn-sm" href="mailto:${esc(a.email)}">✉ ${esc(a.email)}</a>
+        ${a.phone?`<a class="btn btn-light btn-sm" href="tel:${esc(a.phone)}">☎ ${esc(a.phone)}</a>`:''}
+        ${a.cv_path?`<button class="btn btn-primary btn-sm" data-cv="${esc(a.cv_path)}">Öppna CV</button>`:''}
+      </div>
+    </div>`).join('');
+  const m=moreBtn(appShown,apps.length,()=>{appShown+=PAGE;renderApps()});if(m)$('applist').appendChild(m);
+  $('applist').querySelectorAll('[data-cv]').forEach(b=>b.onclick=async()=>{
+    const w=window.open('','_blank');
+    const {data,error}=await db.storage.from(CV_BUCKET).createSignedUrl(b.dataset.cv,600);
+    if(error||!data){if(w)w.close();msg('notice','err','Kunde inte öppna CV:t.');return}
+    if(w)w.location=data.signedUrl;else location.href=data.signedUrl;
+  });
+  $('applist').querySelectorAll('[data-adel]').forEach(b=>b.onclick=()=>confirmTwice(b,async()=>{
+    const a=apps.find(x=>x.id===b.dataset.adel);
+    const {error}=await db.from('applications').delete().eq('id',a.id);
+    if(error){msg('notice','err','Kunde inte ta bort. ('+esc(error.message)+')');b.disabled=false;return}
+    if(a.cv_path)db.storage.from(CV_BUCKET).remove([a.cv_path]).catch(()=>{});
+    apps=apps.filter(x=>x.id!==a.id);msg('notice','ok','Ansökan är borttagen.');renderApps();countApps()}));
+}
 </script>
 </body>
 </html>

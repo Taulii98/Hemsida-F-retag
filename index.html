@@ -170,22 +170,83 @@
   .sbadge{position:absolute;left:12px;top:12px;font-size:.72rem;font-weight:700;padding:.25rem .6rem;border-radius:6px;background:#fff;color:var(--deep);box-shadow:0 2px 8px rgba(0,0,0,.12)}
   .sbadge.pagaende::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#e8a33d;margin-right:.4rem;vertical-align:1px}
   .sbadge.avslutad::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#2e9e62;margin-right:.4rem;vertical-align:1px}
-  .modal{position:fixed;inset:0;z-index:100;background:rgba(13,27,46,.7);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:2rem 1rem}
-  .modal.open{display:flex;animation:fade .25s ease}
-  .mbox{position:relative;background:#fff;border-radius:var(--radius);max-width:56rem;width:100%;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35)}
-  .mclose{position:absolute;right:12px;top:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.95);font-size:1.6rem;line-height:1;cursor:pointer;color:var(--deep);box-shadow:0 2px 10px rgba(0,0,0,.15)}
-  .mmain{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--soft)}
-  .mthumbs{display:flex;gap:.5rem;overflow-x:auto;padding:.75rem 1.5rem 0}
-  .mthumbs img{width:84px;height:62px;object-fit:cover;border-radius:8px;cursor:pointer;opacity:.55;flex-shrink:0;border:2px solid transparent}
-  .mthumbs img.on{opacity:1;border-color:var(--primary)}
-  .mcontent{padding:1.75rem}
-  @media(min-width:760px){.mcontent{padding:2.25rem}}
-  .mcontent h2{font-size:clamp(1.5rem,3vw,2rem);margin-top:.5rem}
-  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:1.25rem}
-  .facts div{background:var(--bg);padding:.85rem 1rem}
-  .facts small{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-  .facts b{color:var(--deep)}
-  .mdesc{margin-top:1.25rem;color:var(--muted);white-space:pre-line;max-width:44rem}
+  .sbadge.kommande::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#3a7bd5;margin-right:.4rem;vertical-align:1px}
+  .tile.click{text-decoration:none;display:block;color:inherit}
+
+  /* Projektvy */
+  .pv-hero{position:relative;min-height:min(62vh,600px);display:flex;align-items:flex-end;background:var(--deeper);overflow:hidden}
+  .pv-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .pv-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(13,27,46,.95) 0%,rgba(13,27,46,.55) 45%,rgba(13,27,46,.15) 100%)}
+  .pv-hero.noimg{min-height:auto}
+  .pv-hero .wrap{position:relative;z-index:1;width:100%;padding-top:6rem;padding-bottom:3rem}
+  .pv-hero.noimg .wrap{padding-top:3rem}
+  .back{display:inline-flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.9);text-decoration:none;font-weight:600;font-size:.92rem;margin-bottom:1.5rem;padding:.4rem .8rem .4rem .55rem;border-radius:8px;background:rgba(255,255,255,.12);backdrop-filter:blur(6px)}
+  .back:hover{background:rgba(255,255,255,.2);color:#fff}
+  .back svg{width:1rem;height:1rem;transform:rotate(180deg)}
+  .pv-hero .kicker{color:#9fc0e6}
+  .pv-hero h1{color:#fff;font-size:clamp(2rem,5vw,3.4rem);margin-top:.8rem;max-width:50rem}
+  .pv-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.1rem}
+  .pv-chips span{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:.35rem .75rem;border-radius:999px;backdrop-filter:blur(6px)}
+  .pv-chips svg{width:.95rem;height:.95rem}
+  .pv-chips .dot{width:8px;height:8px;border-radius:50%}
+  .pv-body{display:grid;grid-template-columns:1fr 340px;gap:3rem;padding-top:4rem;padding-bottom:2rem;align-items:start}
+  @media(max-width:900px){.pv-body{grid-template-columns:1fr;gap:2rem;padding-top:2.5rem}}
+  .pv-desc h2{font-size:1.5rem}
+  .pv-desc p{margin-top:1rem;color:var(--muted);font-size:1.05rem;white-space:pre-line}
+  .pv-facts{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;position:sticky;top:6rem}
+  @media(max-width:900px){.pv-facts{position:static}}
+  .pv-facts h3{font-size:1rem;margin-bottom:.5rem}
+  .pv-facts .f{display:flex;gap:.85rem;align-items:flex-start;padding:.85rem 0;border-top:1px solid var(--line)}
+  .pv-facts .f:first-child{border-top:0}
+  .pv-facts .f .ico{width:2.3rem;height:2.3rem;flex-shrink:0}
+  .pv-facts .f .ico svg{width:1.1rem;height:1.1rem}
+  .pv-facts dt{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .pv-facts dd{font-weight:700;color:var(--deep)}
+  .pv-facts .btn{width:100%;justify-content:center;margin-top:1rem}
+  .pv-gallery{padding-top:2rem;padding-bottom:4rem}
+  .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.25rem}
+  @media(max-width:760px){.gal{grid-template-columns:repeat(2,1fr);gap:.5rem}}
+  .gal button{border:0;padding:0;cursor:zoom-in;border-radius:10px;overflow:hidden;background:var(--soft);aspect-ratio:4/3}
+  .gal.big button:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+  .gal img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+  .gal button:hover img{transform:scale(1.04)}
+  .pv-more{background:#fff;border-top:1px solid var(--line);padding:4rem 0}
+  .pv-more .band-head{margin-bottom:2rem}
+
+  /* Bildvisare */
+  .lb{position:fixed;inset:0;z-index:200;background:rgba(8,15,26,.95);display:none;align-items:center;justify-content:center}
+  .lb.open{display:flex;animation:fade .2s ease}
+  .lb img{max-width:92vw;max-height:84vh;object-fit:contain;border-radius:6px;user-select:none}
+  .lb-btn{position:absolute;border:0;background:rgba(255,255,255,.12);color:#fff;width:48px;height:48px;border-radius:50%;font-size:1.9rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .lb-btn:hover{background:rgba(255,255,255,.22)}
+  .lb-close{top:16px;right:16px}
+  .lb-prev{left:16px;top:50%;transform:translateY(-50%)}
+  .lb-next{right:16px;top:50%;transform:translateY(-50%)}
+  .lb-count{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:.9rem;font-weight:600}
+  @media(max-width:600px){.lb-prev{left:16px;top:auto;bottom:10px;transform:none}.lb-next{right:16px;top:auto;bottom:10px;transform:none}}
+
+  /* Jobba hos oss */
+  .jobs{display:grid;gap:1rem}
+  .job{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .job summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.4rem 1.6rem}
+  .job summary::-webkit-details-marker{display:none}
+  .job h3{font-size:1.2rem}
+  .job .jmeta{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+  .job .jmeta span{font-size:.78rem;font-weight:700;background:var(--soft);color:var(--primary);padding:.25rem .6rem;border-radius:6px}
+  .job .plus{flex-shrink:0;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;transition:transform .25s}
+  .job[open] .plus{transform:rotate(45deg)}
+  .job .jbody{padding:0 1.6rem 1.6rem;border-top:1px solid var(--line)}
+  .job .jbody p{margin-top:1rem;color:var(--muted);white-space:pre-line}
+  .job .jbody .btn{margin-top:1.25rem}
+  .nojobs{background:#fff;border:1px dashed var(--line);border-radius:var(--radius);padding:2rem;text-align:center;color:var(--muted)}
+  .apply{display:grid;grid-template-columns:1fr 1.3fr;gap:2.5rem;align-items:start}
+  @media(max-width:860px){.apply{grid-template-columns:1fr;gap:1.5rem}}
+  .apply .why li{list-style:none;display:flex;gap:.7rem;align-items:center;padding:.6rem 0;font-weight:600;color:var(--deep)}
+  .apply .why svg{width:1.25rem;height:1.25rem;color:var(--primary);flex-shrink:0}
+  .file{display:flex;align-items:center;gap:.75rem;margin-top:.35rem;border:1.5px dashed #c7d3e2;border-radius:10px;padding:.8rem 1rem;cursor:pointer;background:var(--bg);font-weight:600;color:var(--primary)}
+  .file input{display:none}
+  .file span{color:var(--muted);font-weight:500;font-size:.88rem}
+  .sent.err{color:#b42318}
   /* ---------- Kontakt ---------- */
   .contact{display:grid;grid-template-columns:1fr 1.2fr;gap:2rem;align-items:start}
   @media(max-width:860px){.contact{grid-template-columns:1fr}}
@@ -305,18 +366,65 @@
   </div></div>
 </section>
 
-<!-- ================= REFERENSPROJEKT ================= -->
-<section class="page" id="referensprojekt">
+<!-- ================= PROJEKT ================= -->
+<section class="page" id="projekt">
   <div class="phead"><div class="wrap">
-    <span class="kicker">Referensprojekt</span>
-    <h1>Ett urval av det vi byggt.</h1>
-    <p>Parkeringshus, bostadshus och stålhallar runt om i Sverige.</p>
+    <span class="kicker">Projekt</span>
+    <h1>Våra projekt.</h1>
+    <p>Kommande, pågående och avslutade projekt runt om i Sverige.</p>
   </div></div>
   <div class="wrap section">
     <div class="pfilters" id="pfilters"></div>
     <div class="grid3" id="plist"><div class="pempty">Hämtar projekt …</div></div>
   </div>
 </section>
+
+<!-- ================= ETT PROJEKT ================= -->
+<section class="page" id="projektvy"><div id="pv"></div></section>
+
+<!-- ================= JOBBA HOS OSS ================= -->
+<section class="page" id="jobb">
+  <div class="phead"><div class="wrap">
+    <span class="kicker">Jobba hos oss</span>
+    <h1>Bygg Sverige med oss.</h1>
+    <p>Vill du jobba med montage av betong, stål och trä? Se våra lediga tjänster eller skicka en spontanansökan.</p>
+  </div></div>
+
+  <div class="wrap section">
+    <span class="kicker">Lediga tjänster</span>
+    <h2 class="h2" style="margin-bottom:1.5rem">Just nu söker vi</h2>
+    <div class="jobs" id="joblist"><div class="nojobs">Hämtar tjänster …</div></div>
+  </div>
+
+  <div class="how" id="ansok"><div class="wrap apply">
+    <div>
+      <span class="kicker">Ansök</span>
+      <h2 class="h2">Skicka en ansökan</h2>
+      <p class="muted" style="margin-top:1rem">Hittar du ingen tjänst som passar? Skicka en spontanansökan. Vi sparar den och hör av oss när något dyker upp.</p>
+      <ul class="why" style="margin-top:1.25rem">
+        <li>CHECK Projekt i hela Sverige</li>
+        <li>CHECK Ett team på ungefär 30 personer</li>
+        <li>CHECK Montage i betong, stål och trä</li>
+      </ul>
+    </div>
+    <form id="jobform">
+      <h3>Din ansökan</h3>
+      <label>Jag söker<select id="j-job" style="display:block;margin-top:.35rem;width:100%;font:inherit;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:.8rem 1rem"><option value="">Spontanansökan</option></select></label>
+      <div class="two">
+        <label>Namn<input id="j-name" type="text" required></label>
+        <label>Telefon<input id="j-phone" type="tel"></label>
+      </div>
+      <label>Mejl<input id="j-email" type="email" required></label>
+      <label>Berätta kort om dig<textarea id="j-msg" rows="4" placeholder="Erfarenhet, vad du kan, när du kan börja …"></textarea></label>
+      <label>CV (valfritt)
+        <span class="file"><input type="file" id="j-cv" accept=".pdf,.doc,.docx,image/*">Välj fil <span id="j-cvname">PDF, Word eller bild, max 10 MB</span></span>
+      </label>
+      <button class="btn btn-primary" type="submit" id="j-btn">Skicka ansökan</button>
+      <p class="sent" id="j-sent"></p>
+    </form>
+  </div></div>
+</section>
+
 
 <!-- ================= NYHETER ================= -->
 <section class="page" id="nyheter">
@@ -398,11 +506,12 @@
   <div class="wrap fbottom">© 2026 Illyrian Prefabmontage AB</div>
 </footer>
 
-<div class="modal" id="modal" aria-hidden="true">
-  <div class="mbox" role="dialog" aria-modal="true">
-    <button class="mclose" id="mclose" aria-label="Stäng">×</button>
-    <div id="mbody"></div>
-  </div>
+<div class="lb" id="lb" aria-hidden="true">
+  <button class="lb-btn lb-close" id="lb-close" aria-label="Stäng">×</button>
+  <button class="lb-btn lb-prev" id="lb-prev" aria-label="Föregående">‹</button>
+  <img id="lb-img" alt="">
+  <button class="lb-btn lb-next" id="lb-next" aria-label="Nästa">›</button>
+  <div class="lb-count" id="lb-count"></div>
 </div>
 
 <script>
@@ -444,15 +553,22 @@ document.getElementById('svc-list').innerHTML=services.map((s,i)=>`
   <div class="tags">${s.tags.map(t=>`<span>${t}</span>`).join('')}</div></div></article>`).join('');
 
 /* ---------- Flikar ---------- */
-const nav=[['hem','Hem'],['tjanster','Tjänster'],['referensprojekt','Referensprojekt'],['nyheter','Nyheter'],['kontakt','Kontakta oss']];
+const nav=[['hem','Hem'],['tjanster','Tjänster'],['projekt','Projekt'],['nyheter','Nyheter'],['jobb','Jobba hos oss'],['kontakt','Kontakta oss']];
 document.getElementById('tabs').innerHTML=nav.map(([id,l])=>`<a href="#${id}" data-id="${id}"${id==='kontakt'?' class="cta"':''}>${l}</a>`).join('');
 document.getElementById('flinks').innerHTML=nav.map(([id,l])=>`<li><a href="#${id}">${l}</a></li>`).join('');
 
-/* ---------- Referensprojekt (hämtas från admin) ---------- */
+/* ---------- Projekt (hämtas från admin) ---------- */
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const STATUS={pagaende:'Pågående',avslutad:'Avslutat'};
+const STATUS={kommande:'Kommande',pagaende:'Pågående',avslutad:'Avslutat'};
+const STATUS_COLOR={kommande:'#3a7bd5',pagaende:'#e8a33d',avslutad:'#2e9e62'};
+Object.assign(I,{
+  tag:'<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4Z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>',
+  user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/>'
+});
 const CFG=window.IPM_CONFIG||{};
-let db=null,projects=[],pfilter='alla';
+let db=null,projects=[],pfilter='alla',loaded=false,pendingId=null;
 try{
   if(window.supabase&&CFG.SUPABASE_URL&&!CFG.SUPABASE_URL.includes('KLISTRA'))
     db=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_KEY);
@@ -461,63 +577,170 @@ try{
 const HALL_IMG=document.querySelector('.hero img').src;
 const DEMO=[
   {id:'d1',title:'Stålhall under montage',location:'Skåne',type:'Stålhall',customer:'Kundens namn',period:'2026',status:'pagaende',description:'Exempelprojekt. Stålstomme med fackverk, takplåt och sandwichpaneler.',images:[HALL_IMG]},
+  {id:'d4',title:'Projektnamn',location:'Ort',type:'Bostad',customer:'Kundens namn',period:'Start 2027',status:'kommande',description:'Exempelprojekt. Här beskrivs ett kommande projekt.',images:[]},
   {id:'d2',title:'Projektnamn',location:'Ort',type:'Parkeringshus',customer:'Kundens namn',period:'År',status:'avslutad',description:'Exempelprojekt. Här skrivs en beskrivning av vad IPM gjorde.',images:[]},
   {id:'d3',title:'Projektnamn',location:'Ort',type:'Bostad',customer:'Kundens namn',period:'År',status:'avslutad',description:'Exempelprojekt. Här skrivs en beskrivning av vad IPM gjorde.',images:[]}
 ];
 async function loadProjects(){
-  if(!db){projects=DEMO;renderProjects();return}
-  try{
-    const {data,error}=await db.from('projects').select('*').order('created_at',{ascending:false});
-    projects=error?[]:(data||[]);
-  }catch(e){projects=[]}
-  renderProjects();
+  if(!db)projects=DEMO;
+  else{
+    try{
+      const {data,error}=await db.from('projects').select('*').order('created_at',{ascending:false});
+      projects=error?[]:(data||[]);
+    }catch(e){projects=[]}
+  }
+  loaded=true;renderProjects();
+  if(pendingId){renderProjectPage(pendingId);pendingId=null}
+}
+function tileHTML(p){
+  return `<a class="tile click" href="#projekt/${encodeURIComponent(p.id)}">
+    <div class="imgwrap">${p.images&&p.images[0]?`<img src="${esc(p.images[0])}" alt="${esc(p.title)}" loading="lazy">`:'<div class="ph">Bild kommer</div>'}
+      <span class="sbadge ${esc(p.status)}">${STATUS[p.status]||''}</span></div>
+    <div class="body"><span class="k">${esc(p.type||'Projekt')}</span><h2>${esc(p.title)}</h2>
+      <p class="meta">${[p.location,p.period].filter(Boolean).map(esc).join(' · ')}</p>
+      ${p.description?`<p class="d">${esc(p.description.length>110?p.description.slice(0,110).trim()+' …':p.description)}</p>`:''}</div>
+  </a>`;
 }
 function renderProjects(){
-  const n={alla:projects.length,pagaende:0,avslutad:0};projects.forEach(p=>n[p.status]++);
-  document.getElementById('pfilters').innerHTML=[['alla','Alla projekt'],['pagaende','Pågående'],['avslutad','Avslutade']]
+  const n={alla:projects.length,kommande:0,pagaende:0,avslutad:0};projects.forEach(p=>{if(p.status in n)n[p.status]++});
+  document.getElementById('pfilters').innerHTML=[['alla','Alla projekt'],['kommande','Kommande'],['pagaende','Pågående'],['avslutad','Avslutade']]
     .map(([k,l])=>`<button data-f="${k}" class="${pfilter===k?'active':''}">${l} (${n[k]})</button>`).join('');
   document.querySelectorAll('#pfilters button').forEach(b=>b.onclick=()=>{pfilter=b.dataset.f;renderProjects()});
   const list=projects.filter(p=>pfilter==='alla'||p.status===pfilter);
   const el=document.getElementById('plist');
-  if(!list.length){el.innerHTML='<div class="pempty">Inga projekt här än.</div>';return}
-  el.innerHTML=list.map(p=>`
-    <article class="tile click" data-id="${esc(p.id)}" tabindex="0">
-      <div class="imgwrap">${p.images&&p.images[0]?`<img src="${esc(p.images[0])}" alt="${esc(p.title)}" loading="lazy">`:'<div class="ph">Bild kommer</div>'}
-        <span class="sbadge ${p.status}">${STATUS[p.status]||''}</span></div>
-      <div class="body"><span class="k">${esc(p.type||'Projekt')}</span><h2>${esc(p.title)}</h2>
-        <p class="meta">${[p.location,p.period].filter(Boolean).map(esc).join(' · ')}</p>
-        ${p.description?`<p class="d">${esc(p.description.length>110?p.description.slice(0,110).trim()+' …':p.description)}</p>`:''}</div>
-    </article>`).join('');
-  el.querySelectorAll('.tile').forEach(t=>{
-    t.onclick=()=>openProject(t.dataset.id);
-    t.onkeydown=e=>{if(e.key==='Enter')openProject(t.dataset.id)};
-  });
+  el.innerHTML=list.length?list.map(tileHTML).join(''):'<div class="pempty">Inga projekt här än.</div>';
 }
-const modal=document.getElementById('modal');
-function openProject(id){
-  const p=projects.find(x=>String(x.id)===String(id));if(!p)return;
+
+/* ---------- Sida för ett projekt ---------- */
+function renderProjectPage(id){
+  const el=document.getElementById('pv');
+  if(!loaded){pendingId=id;el.innerHTML='<div class="wrap section"><div class="pempty">Hämtar projekt …</div></div>';return}
+  const p=projects.find(x=>String(x.id)===String(id));
+  if(!p){el.innerHTML='<div class="wrap section"><div class="pempty">Projektet hittades inte. <a href="#projekt" class="link">Till alla projekt</a></div></div>';return}
   const imgs=p.images||[];
-  const facts=[['Plats',p.location],['Typ',p.type],['Kund',p.customer],['Utförandetid',p.period],['Status',STATUS[p.status]]].filter(f=>f[1]);
-  document.getElementById('mbody').innerHTML=`
-    ${imgs.length?`<img class="mmain" id="mmain" src="${esc(imgs[0])}" alt="${esc(p.title)}">`:''}
-    ${imgs.length>1?`<div class="mthumbs">${imgs.map((u,i)=>`<img src="${esc(u)}" data-i="${i}" class="${i?'':'on'}" alt="">`).join('')}</div>`:''}
-    <div class="mcontent">
-      <span class="kicker">${esc(p.type||'Projekt')}</span>
-      <h2>${esc(p.title)}</h2>
-      <div class="facts">${facts.map(([k,v])=>`<div><small>${k}</small><b>${esc(v)}</b></div>`).join('')}</div>
-      ${p.description?`<p class="mdesc">${esc(p.description)}</p>`:''}
-    </div>`;
-  document.querySelectorAll('.mthumbs img').forEach(t=>t.onclick=()=>{
-    document.getElementById('mmain').src=imgs[+t.dataset.i];
-    document.querySelectorAll('.mthumbs img').forEach(x=>x.classList.toggle('on',x===t));
-  });
-  modal.classList.add('open');modal.scrollTop=0;document.body.style.overflow='hidden';
+  const facts=[['pin','Plats',p.location],['tag','Typ',p.type],['user','Kund',p.customer],['cal','Utförandetid',p.period],['flag','Status',STATUS[p.status]]].filter(f=>f[2]);
+  const others=projects.filter(x=>x.id!==p.id).slice(0,3);
+  el.innerHTML=`
+    <div class="pv-hero ${imgs.length?'':'noimg'}">
+      ${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.title)}">`:''}
+      <div class="wrap">
+        <a class="back" href="#projekt">${svg('arrow')} Alla projekt</a><br>
+        <span class="kicker">${esc(p.type||'Projekt')}</span>
+        <h1>${esc(p.title)}</h1>
+        <div class="pv-chips">
+          <span><i class="dot" style="background:${STATUS_COLOR[p.status]||'#fff'}"></i>${STATUS[p.status]||''}</span>
+          ${p.location?`<span>${svg('pin')}${esc(p.location)}</span>`:''}
+          ${p.period?`<span>${svg('cal')}${esc(p.period)}</span>`:''}
+        </div>
+      </div>
+    </div>
+    <div class="wrap pv-body">
+      <div class="pv-desc">
+        <span class="kicker">Om projektet</span>
+        <h2 style="margin-top:.75rem">${esc(p.title)}</h2>
+        <p>${p.description?esc(p.description):'Beskrivning kommer snart.'}</p>
+      </div>
+      <aside class="pv-facts">
+        <h3>Projektfakta</h3>
+        <dl>${facts.map(([ic,k,v])=>`<div class="f"><span class="ico">${svg(ic)}</span><div><dt>${k}</dt><dd>${esc(v)}</dd></div></div>`).join('')}</dl>
+        <a class="btn btn-primary" href="#kontakt">Har ni ett liknande projekt? ${svg('arrow')}</a>
+      </aside>
+    </div>
+    ${imgs.length>1?`<div class="wrap pv-gallery">
+      <span class="kicker">Bilder</span><h2 style="margin-top:.75rem">Från projektet</h2>
+      <div class="gal ${imgs.length>=4?'big':''}">${imgs.map((u,i)=>`<button data-i="${i}" aria-label="Visa bild ${i+1}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join('')}</div>
+    </div>`:''}
+    ${others.length?`<div class="pv-more"><div class="wrap">
+      <div class="band-head"><div><span class="kicker">Fler projekt</span><h2 class="h2">Se mer av vårt arbete</h2></div>
+      <a class="link" href="#projekt">Alla projekt ${svg('arrow')}</a></div>
+      <div class="grid3">${others.map(tileHTML).join('')}</div>
+    </div></div>`:''}`;
+  el.querySelectorAll('.gal button').forEach(b=>b.onclick=()=>openLightbox(imgs,+b.dataset.i));
+  const hero=el.querySelector('.pv-hero img');
+  if(hero)hero.style.cursor='zoom-in',hero.onclick=()=>openLightbox(imgs,0);
 }
-function closeProject(){modal.classList.remove('open');document.body.style.overflow=''}
-document.getElementById('mclose').onclick=closeProject;
-modal.onclick=e=>{if(e.target===modal)closeProject()};
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProject()});
+
+/* ---------- Bildvisare ---------- */
+const lb=document.getElementById('lb');let lbImgs=[],lbI=0;
+function lbShow(){document.getElementById('lb-img').src=lbImgs[lbI];document.getElementById('lb-count').textContent=`${lbI+1} / ${lbImgs.length}`;
+  const many=lbImgs.length>1;document.getElementById('lb-prev').style.display=many?'':'none';document.getElementById('lb-next').style.display=many?'':'none'}
+function openLightbox(imgs,i){lbImgs=imgs;lbI=i;lbShow();lb.classList.add('open');document.body.style.overflow='hidden'}
+function closeLightbox(){if(!lb)return;lb.classList.remove('open');document.body.style.overflow=''}
+function lbStep(d){lbI=(lbI+d+lbImgs.length)%lbImgs.length;lbShow()}
+document.getElementById('lb-close').onclick=closeLightbox;
+document.getElementById('lb-prev').onclick=e=>{e.stopPropagation();lbStep(-1)};
+document.getElementById('lb-next').onclick=e=>{e.stopPropagation();lbStep(1)};
+lb.onclick=e=>{if(e.target===lb)closeLightbox()};
+document.addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')lbStep(1);if(e.key==='ArrowLeft')lbStep(-1)});
+let tx=null;lb.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+lb.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)lbStep(dx<0?1:-1);tx=null});
 loadProjects();
+
+/* ---------- Jobba hos oss ---------- */
+let jobs=[];
+async function loadJobs(){
+  if(!db){
+    jobs=[{id:'demo',title:'Exempel: Montör betongprefab',location:'Skåne / hela Sverige',employment:'Heltid',last_date:'Löpande',description:'Exempeltjänst. Här skriver IPM vad de söker, vad jobbet innebär och vilka krav som finns.'}];
+  }else{
+    try{
+      const {data,error}=await db.from('jobs').select('*').eq('published',true).order('created_at',{ascending:false});
+      jobs=error?[]:(data||[]);
+    }catch(e){jobs=[]}
+  }
+  renderJobs();
+}
+function renderJobs(){
+  const el=document.getElementById('joblist');
+  el.innerHTML=jobs.length?jobs.map(j=>`
+    <details class="job">
+      <summary><div><h3>${esc(j.title)}</h3>
+        <div class="jmeta">${[j.location,j.employment,j.last_date?'Sista dag: '+j.last_date:''].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join('')}</div></div>
+        <span class="plus">+</span></summary>
+      <div class="jbody"><p>${esc(j.description||'')}</p>
+        <a class="btn btn-primary" href="#ansok" data-apply="${esc(j.id)}">Sök tjänsten ${svg('arrow')}</a></div>
+    </details>`).join('')
+    :'<div class="nojobs">Inga lediga tjänster just nu. Du är välkommen att skicka en spontanansökan längre ner.</div>';
+  const sel=document.getElementById('j-job');
+  sel.innerHTML='<option value="">Spontanansökan</option>'+jobs.map(j=>`<option value="${esc(j.id)}">${esc(j.title)}</option>`).join('');
+}
+// "Sök tjänsten" väljer tjänsten i formuläret och scrollar dit
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-apply]');if(!b)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  document.getElementById('j-job').value=b.dataset.apply;
+  document.getElementById('ansok').scrollIntoView({behavior:'smooth'});
+},true);
+document.getElementById('j-cv').onchange=e=>{const f=e.target.files[0];document.getElementById('j-cvname').textContent=f?f.name:'PDF, Word eller bild, max 10 MB'};
+document.getElementById('jobform').onsubmit=async e=>{
+  e.preventDefault();
+  const out=document.getElementById('j-sent'),btn=document.getElementById('j-btn');
+  const say=(t,err)=>{out.textContent=t;out.className='sent'+(err?' err':'');out.style.display='block'};
+  if(!db){say('Tack! (Formuläret är inte kopplat än, så inget skickades.)');return}
+  const cv=document.getElementById('j-cv').files[0];
+  if(cv&&cv.size>10*1024*1024){say('Filen är för stor. Max 10 MB.',true);return}
+  btn.disabled=true;btn.textContent='Skickar …';
+  try{
+    let cv_path=null;
+    if(cv){
+      const safe=cv.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-').slice(-60);
+      cv_path=`${new Date().toISOString().slice(0,10)}/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safe}`;
+      const up=await db.storage.from('ansokningar').upload(cv_path,cv,{contentType:cv.type||'application/octet-stream'});
+      if(up.error)throw up.error;
+    }
+    const sel=document.getElementById('j-job');const job=jobs.find(j=>String(j.id)===sel.value);
+    const {error}=await db.from('applications').insert({
+      job_id:job&&job.id!=='demo'?job.id:null,job_title:job?job.title:'Spontanansökan',
+      name:document.getElementById('j-name').value.trim(),email:document.getElementById('j-email').value.trim(),
+      phone:document.getElementById('j-phone').value.trim()||null,message:document.getElementById('j-msg').value.trim()||null,cv_path
+    });
+    if(error)throw error;
+    e.target.reset();document.getElementById('j-cvname').textContent='PDF, Word eller bild, max 10 MB';
+    say('Tack för din ansökan! Vi hör av oss.');
+  }catch(err){say('Något gick fel och ansökan skickades inte. Försök igen eller mejla info@i-pm.se.',true)}
+  finally{btn.disabled=false;btn.textContent='Skicka ansökan'}
+};
+loadJobs();
 
 /* ---------- Mjuk inbländning när man scrollar ---------- */
 let io=null;
@@ -530,17 +753,21 @@ function reveal(page){
   });
 }
 
-function show(id){
-  if(typeof closeProject==='function')closeProject();
-  if(!nav.some(n=>n[0]===id))id='hem';
+function show(route){
+  closeLightbox();
+  let [id,param]=String(route||'hem').split('/');
+  if(id==='projekt'&&param)id='projektvy';
+  else if(!nav.some(n=>n[0]===id))id='hem';
+  const tab=id==='projektvy'?'projekt':id;
+  if(id==='projektvy')renderProjectPage(decodeURIComponent(param));
   document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
-  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('active',a.dataset.id===id));
-  document.getElementById('ctaband').style.display=id==='kontakt'?'none':'';
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('active',a.dataset.id===tab));
+  document.getElementById('ctaband').style.display=(id==='kontakt'||id==='jobb')?'none':'';
   const t=document.querySelector('#tabs a.active');
   if(t&&t.scrollIntoView)try{t.scrollIntoView({inline:'center',block:'nearest'})}catch(e){}
   window.scrollTo(0,0);
   reveal(document.getElementById(id));
-  try{history.replaceState(null,'','#'+id)}catch(e){}
+  try{history.replaceState(null,'','#'+(id==='projektvy'?'projekt/'+param:id))}catch(e){}
 }
 document.addEventListener('click',e=>{
   const a=e.target.closest('a[href^="#"]');
